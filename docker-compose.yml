@@ -1,0 +1,18 @@
+version: '3'
+services:
+  web:
+    image: yiisoftware/yii2-php:7.1-apache
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./route_web:/app:delegated
+    ports:
+      - '80:80'
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "root-password"
+      MYSQL_DATABASE: "route_registry"
+      MYSQL_USER: "webuser"
+      MYSQL_PASSWORD: "webpass"
