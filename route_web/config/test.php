@@ -23,6 +23,10 @@ return [
         ],
         'urlManager' => [
             'showScriptName' => true,
+            'enablePrettyUrl' => true,
+            'rules' => [
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'route'],
+            ],
         ],
         'user' => [
             'identityClass' => 'app\models\User',
