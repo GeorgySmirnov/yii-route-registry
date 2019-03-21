@@ -30,4 +30,26 @@ class testRouteCest
         $I->seeResponseIsJson();
         $I->seeResponseContains('"origin":"beta"');
     }
+
+    public function canCreateRoute(ApiTester $I)
+    {
+        $I->haveHttpHeader("Accept", "application/json");
+        $I->sendPOST('routes', ['origin' => 'test_create_origin']);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
+        $I->sendGET('routes');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"origin":"test_create_origin"');
+    }
+
+    public function canUpdateRoute(ApiTester $I)
+    {
+        $I->haveHttpHeader("Accept", "application/json");
+        $I->sendPUT('routes/1', ['origin' => 'test_update_origin']);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->sendGET('routes');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"origin":"test_update_origin"');
+    }
 }

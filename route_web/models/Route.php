@@ -11,4 +11,27 @@ class Route extends ActiveRecord
     {
         return '{{route}}';
     }
+
+    public function rules()
+    {
+        /*
+         * Will define proper rules later
+         * Stub rules allow us to use update and create
+         * functions in RESTapi
+         */
+        return [
+            [
+                [
+                    'origin',
+                    'departure',
+                    'destination',
+                    'arrival',
+                    'longevity',
+                    'price',
+                    'company',
+                    'schedule'],
+                'safe'
+            ],
+        ];
+    }
 }
