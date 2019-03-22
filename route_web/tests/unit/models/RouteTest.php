@@ -82,6 +82,7 @@ class RouteTest extends \Codeception\Test\Unit
     public function testCanSetArrivalWithStrAndInt()
     {
         $route = new Route();
+        $route->departure = 0;
 
         $route->arrivalStr = 'a';
         expect($route->arrival)->equals(null);
@@ -107,6 +108,37 @@ class RouteTest extends \Codeception\Test\Unit
 
         $route->longevity = 45;
         expect($route->longevityStr)->equals('00:45');
+    }
+
+    public function testCanUseArrivalField()
+    {
+        $route = new Route();
+
+        $route->departure = 0;
+        $route->longevity = 120;
+        expect($route->arrival)->equals(120);
+
+        $route->arrival = 50;
+        expect($route->longevity)->equals(50);
+
+        $route->longevity = 24 * 60 + 150;
+        expect($route->arrival)->equals(150);
+
+        $route->departure = null;
+        $route->longevity = 24 * 60 + 100;
+        $route->arrival = 120;
+        expect($route->departure)->equals(20);
+
+        $route->departure = null;
+        $route->longevity = 48 * 60 + 100;
+        $route->arrival = 120;
+        expect($route->departure)->equals(20);
+
+        $route->departure = 23 * 60;
+        $route->longevity = null;
+        $route->arrival = 60;
+        expect($route->longevity)->equals(120);
+        
     }
 }
 

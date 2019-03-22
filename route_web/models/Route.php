@@ -85,6 +85,42 @@ class Route extends ActiveRecord
         return sprintf('%02d:%02d', intdiv($input, 60), $input % 60);
     }
 
+    /*
+     * Вычисляем время прибытия на основе времени отправления и времени в пути.
+     * Прибытие может выпасть на следующие дни после отправления, поэтому
+     * используем остаток от деления.
+     */ 
+    public function getArrival(): ?int
+    {
+        if (is_int($this->departure) && is_int($this->longevity))
+        {
+            return ($this->departure + $this->longevity) % (24 * 60);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /*
+     * Для установки нового времени прибытия пытаемся установить время в пути
+     * или время отправления, смотря - что заполненно.
+     */ 
+    public function setArrival(int $input): void
+    {
+        // Modulo (%) может возвращать отрицательные значения,
+        // что в данном случае нежелательно.
+        // Поэтому, формулы вышли немного мудрёные.
+        if (is_int($this->departure))
+        {
+            $this->longevity = (24 * 60 + $input - $this->departure) % (24 * 60);
+        }
+        elseif (is_int($this->longevity))
+        {
+            $this->departure = (24 * 60 + $input - ($this->longevity % (24 * 60))) % (24 * 60);
+        }
+    }
+    
     private function setTimeStrField(string $field, string $input): void
     {
         if ($this->validateTimeStr($input))
