@@ -6,6 +6,8 @@ use yii\db\ActiveRecord;
 
 class Route extends ActiveRecord
 {
+    // Week days
+    const WD = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
     public static function tableName()
     {
@@ -83,6 +85,49 @@ class Route extends ActiveRecord
     public static function timeIntToStr(int $input): string
     {
         return sprintf('%02d:%02d', intdiv($input, 60), $input % 60);
+    }
+
+    public static function validateScheduleStr(string $input): bool
+    {
+        $exp = '/^([, ]*(' . implode('|', Route::WD) . '))*$/';
+        return preg_match($exp, $input) === 1;
+    }
+
+    /*
+     * Конвертирует число представляющее битовую маску в список дней недели.
+     *     0b0010101 ---> 'пн, ср, пт'
+     * 1 - день в списке, 0 - нет.
+     * Младший бит - понедельник.
+     * 7-й бит - воскресенье.
+     */ 
+    public static function scheduleIntToStr(int $input): string
+    {
+        $result = [];
+        for ($i = 0; $i < count(Route::WD); $i++)
+        {
+            if ($input & (1 << $i)) {
+                $result[] = Route::WD[$i];
+            }
+        }
+        return implode(', ', $result);
+    }
+
+    /*
+     * Конвертирует список дней недели в битовую маску.
+     *     'пн, ср, пт' ---> 0b0010101
+     */ 
+    public static function scheduleStrToInt(string $input): int
+    {
+        $result = 0;
+        foreach (explode(',', $input) as $day)
+        {
+            $i = array_search(trim($day), Route::WD);
+            if (is_int($i))
+            {
+                $result |= 1 << $i;
+            }
+        }
+        return $result;
     }
 
     /*

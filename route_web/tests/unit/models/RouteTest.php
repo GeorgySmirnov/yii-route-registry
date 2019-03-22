@@ -140,6 +140,41 @@ class RouteTest extends \Codeception\Test\Unit
         expect($route->longevity)->equals(120);
         
     }
+
+    public function testCanConvertScheduleIntToStr()
+    {
+        expect(Route::scheduleIntToStr(0b0000111))
+            ->equals('пн, вт, ср');
+        expect(Route::scheduleIntToStr(0b0011010))
+            ->equals('вт, чт, пт');
+        expect(Route::scheduleIntToStr(0b1111111))
+            ->equals('пн, вт, ср, чт, пт, сб, вс');
+        expect(Route::scheduleIntToStr(0b0000000))
+            ->equals('');
+    }
+
+    public function testCanConvertScheduleStrToInt()
+    {
+        expect(Route::scheduleStrToInt('пн, вт, ср'))
+            ->equals(0b0000111);
+        expect(Route::scheduleStrToInt('вт, чт, пт'))
+            ->equals(0b0011010);
+        expect(Route::scheduleStrToInt('пн, вт, ср, чт, пт, сб, вс'))
+            ->equals(0b1111111);
+        expect(Route::scheduleStrToInt(''))
+            ->equals(0b0000000);
+    }
+
+    public function testCanValidateScheduleStr()
+    {
+        expect_that(Route::validateScheduleStr('пн, вт, ср'));
+        expect_that(Route::validateScheduleStr('вт, чт, пт'));
+        expect_that(Route::validateScheduleStr('пн, вт, ср, чт, пт, сб, вс'));
+        expect_that(Route::validateScheduleStr(''));
+        expect_not(Route::validateScheduleStr('aaa'));
+        expect_not(Route::validateScheduleStr('4'));
+        expect_not(Route::validateScheduleStr('ву, вт'));
+    }
 }
 
 
