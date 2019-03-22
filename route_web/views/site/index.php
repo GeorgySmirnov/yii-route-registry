@@ -64,10 +64,10 @@ $this->title = 'Route registry';
          fields: [
              { name: "id", type: "number", width: 20 },
              { name: "origin", type: "text", width: 100 },
-             { name: "departure", type: "number", width: 50 },
+             { name: "departureStr", type: "text", width: 50 },
              { name: "destination", type: "text", width: 100 },
-             { name: "arrival", type: "number", width: 50 },
-             { name: "longevity", type: "number", width: 50 },
+             { name: "arrivalStr", type: "text", width: 50 },
+             { name: "longevityStr", type: "text", width: 50 },
              { name: "price", type: "number", width: 50 },
              { name: "schedule", type: "text", width: 100},
              { type: "control" }
