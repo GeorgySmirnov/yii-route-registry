@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use yii\db\Query;
 use app\models\Route;
 
 /**
@@ -14,10 +15,9 @@ class m190322_200506_convert_schedule_column extends Migration
     public function up()
     {
         $this->addColumn('route', 'new_schedule', $this->integer());
-        foreach (Route::find()->each() as $route)
+        foreach ((new Query)->from('route')->each() as $route)
         {
-            $route->new_schedule = Route::scheduleStrToInt($route->schedule);
-            $route->save();
+            $this->update('route', ['new_schedule' => Route::scheduleStrToInt($route['schedule'])], ['id' => $route['id']]);
         }
         $this->dropColumn('route', 'schedule');
         $this->renameColumn('route', 'new_schedule', 'schedule');
