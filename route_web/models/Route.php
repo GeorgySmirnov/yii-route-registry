@@ -49,19 +49,34 @@ class Route extends ActiveRecord
             [
                 [
                     'origin',
-                    'departure',
                     'destination',
-                    'arrival',
-                    'longevity',
                     'price',
                     'company',
-                    'schedule',
                     'scheduleStr',
                     'departureStr',
                     'arrivalStr',
                     'longevityStr',
                 ],
                 'safe'
+            ],
+            [
+                [
+                    'departure',
+                    'arrival',
+                ],
+                'integer', 'min' => 0, 'max' => 24 * 60 - 1
+            ],
+            [
+                [
+                    'longevity',
+                ],
+                'integer', 'min' => 0
+            ],
+            [
+                [
+                    'schedule',
+                ],
+                'integer', 'min' => 0, 'max' => 0b1111111
             ],
         ];
     }

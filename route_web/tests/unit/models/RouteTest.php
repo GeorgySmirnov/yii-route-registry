@@ -184,6 +184,40 @@ class RouteTest extends \Codeception\Test\Unit
         $route->scheduleStr = 'пн, вт, ср';
         expect($route->scheduleStr)->equals('пн, вт, ср');
     }
+
+    public function testCanValidateFields()
+    {
+        $route = new Route();
+
+        $route->departure = 100;
+        $this->assertTrue($route->validate(['departure']));
+
+        $route->departure = -100;
+        $this->assertFalse($route->validate(['departure']));
+
+        $route->departure = 25 * 60;
+        $this->assertFalse($route->validate(['departure']));
+
+        $route->departure = 24 * 60;
+        $this->assertFalse($route->validate(['departure']));
+
+        $route->departure = 0;
+
+        $route->longevity = 100;
+        $this->assertTrue($route->validate(['longevity']));
+
+        $route->longevity = -100;
+        $this->assertFalse($route->validate(['longevity']));
+
+        $route->schedule = 0b1111111;
+        $this->assertTrue($route->validate(['schedule']));
+
+        $route->schedule = -1;
+        $this->assertFalse($route->validate(['schedule']));
+
+        $route->schedule = 0b10000000;
+        $this->assertFalse($route->validate(['schedule']));
+    }
 }
 
 
