@@ -175,6 +175,15 @@ class RouteTest extends \Codeception\Test\Unit
         expect_not(Route::validateScheduleStr('4'));
         expect_not(Route::validateScheduleStr('ву, вт'));
     }
+
+    public function testCanSetAndGetScheduleStr()
+    {
+        $route = new Route();
+
+        expect($route->scheduleStr)->equals('--');
+        $route->scheduleStr = 'пн, вт, ср';
+        expect($route->scheduleStr)->equals('пн, вт, ср');
+    }
 }
 
 

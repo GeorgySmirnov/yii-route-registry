@@ -69,7 +69,7 @@ $this->title = 'Route registry';
              { name: "arrivalStr", type: "text", width: 50 },
              { name: "longevityStr", type: "text", width: 50 },
              { name: "price", type: "number", width: 50 },
-             { name: "schedule", type: "text", width: 100},
+             { name: "scheduleStr", type: "text", width: 100},
              { type: "control" }
          ]
      });

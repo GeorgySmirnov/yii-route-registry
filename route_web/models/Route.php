@@ -22,7 +22,7 @@ class Route extends ActiveRecord
             'destination',
             'price',
             'company',
-            'schedule',
+            'scheduleStr',
             'departureStr',
             'arrivalStr',
             'longevityStr',
@@ -35,6 +35,7 @@ class Route extends ActiveRecord
             'departure',
             'arrival',
             'longevity',
+            'schedule',
         ];
     }
     public function rules()
@@ -55,6 +56,7 @@ class Route extends ActiveRecord
                     'price',
                     'company',
                     'schedule',
+                    'scheduleStr',
                     'departureStr',
                     'arrivalStr',
                     'longevityStr',
@@ -128,6 +130,26 @@ class Route extends ActiveRecord
             }
         }
         return $result;
+    }
+
+    public function getScheduleStr(): string
+    {
+        if (is_int($this->schedule))
+        {
+            return $this->scheduleIntToStr($this->schedule);
+        }
+        else
+        {
+            return '--';
+        }
+    }
+
+    public function setScheduleStr(string $input)
+    {
+        if ($this->validateScheduleStr($input))
+        {
+            $this->schedule = $this->scheduleStrToInt($input);
+        }
     }
 
     /*
