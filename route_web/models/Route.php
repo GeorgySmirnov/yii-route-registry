@@ -50,7 +50,6 @@ class Route extends ActiveRecord
                 [
                     'origin',
                     'destination',
-                    'price',
                     'company',
                     'scheduleStr',
                     'departureStr',
@@ -77,6 +76,12 @@ class Route extends ActiveRecord
                     'schedule',
                 ],
                 'integer', 'min' => 0, 'max' => 0b1111111
+            ],
+            [
+                [
+                    'price',
+                ],
+                'double', 'min' => 0
             ],
         ];
     }

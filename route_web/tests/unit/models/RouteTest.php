@@ -217,6 +217,12 @@ class RouteTest extends \Codeception\Test\Unit
 
         $route->schedule = 0b10000000;
         $this->assertFalse($route->validate(['schedule']));
+
+        $route->price = 10.35;
+        $this->assertTrue($route->validate(['price']));
+
+        $route->price = -1;
+        $this->assertFalse($route->validate(['price']));
     }
 }
 
